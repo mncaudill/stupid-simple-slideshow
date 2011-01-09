@@ -1,0 +1,15 @@
+============================================
+Stupid Simple Mobile Safari Slideshow
+Author: Nolan Caudill
+Date: 2011-01-09
+============================================
+
+My wife needed a slideshow to display on an iPad that simply looped through a list of photos, centered on a black background. She also needed it in the next morning and this is my quick midnight hacking.
+
+This script does the dumbest, laziest thing possible. Instead of listing out each photo's width and height explicitly, I loop through all of them once to figure out their dimensions, saving me a lot of typing (ideally). So when the slideshow is fired up it will flash all the images really quickly and then go into the real slideshow. 
+
+This does use the neat iOS meta tag trick that tells it to hide the browser chrome if you save the page as a bookmark to the home screen.
+
+One note:
+I had to put in a cache-buster on the image requests as I don't think the image.onload function fires properly when the images is coming from cache. I didn't really feel like investigating this and busting cache was easy and lazy, keeping in the spirit of the project.
+

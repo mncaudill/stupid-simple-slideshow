@@ -1,0 +1,104 @@
+<!doctype html>
+<html>
+    <meta name="apple-mobile-web-app-capable" content="yes" /> 
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+
+    <head>
+        <title>Stupid Simple iPad/iPhone Slideshow</title>
+        <style>
+        * { margin:0; padding:0; }
+        </style>
+    </head>
+    <body style="height:100%;background-color:black;">
+                <img style="margin-left:auto;margin-right:auto;" src="" id="slideshow-image">
+        <script>
+        var images = [
+            /*
+            "http://farm6.static.flickr.com/5084/5337858669_77002e52da_b.jpg",
+            "http://farm6.static.flickr.com/5009/5337858183_ecefb5ee72_o.jpg",
+            "http://farm6.static.flickr.com/5201/5337858933_581e3f4d50_o.jpg",
+            "http://farm6.static.flickr.com/5004/5337858465_05d0cac0d2_o.jpg",
+            "http://farm6.static.flickr.com/5286/5338470734_fa51ff2387_o.jpg",
+            "http://farm6.static.flickr.com/5241/5337858803_540f2b4e1e_o.jpg",
+            */
+        ];
+
+        var vp_width = window.innerWidth;
+        var vp_height = window.innerHeight;
+
+        var images_sizes = [];
+
+        var img_node = document.getElementById('slideshow-image');
+        var index = 0;
+        var num_images = images.length;
+
+        img_node.onload = function() {
+
+            width = img_node.width;
+            height = img_node.height;
+            console.log(width + ',' + height);
+
+            if(width > vp_width) {
+                ratio = vp_width / width;
+                width = vp_width;
+                height *= ratio;
+            }
+
+            if(height > vp_height) {
+                ratio = vp_height / height;
+                height = vp_height;
+                width *= ratio;
+            }
+
+            images_sizes[index] = {width: Math.round(width), height: Math.round(height)};
+
+            index++;
+            if(index < num_images) {
+                img_node.style.width = "";
+                img_node.style.height = "";
+
+                name = images[index] + '?' + (new Date().getTime());
+                img_node.src = name;
+                images[index] = name;
+            } else {
+                init();
+            }
+        }
+        img_node.src = images[0];
+
+        function init() {
+            index = 0;
+
+            img_node.onload = function(){ 
+                img_node.style.display = "block";
+            };
+
+            img_node.style.width = images_sizes[0].width + 'px';
+            img_node.style.height = images_sizes[0].height + 'px';
+            img_node.src = images[0];
+
+            setInterval(function(){
+                img_node.style.display = "none";
+
+                index = ++index % num_images;
+
+                curr_dim = images_sizes[index];
+
+                img_node.style.width = curr_dim.width + 'px';
+                img_node.style.height = curr_dim.height + 'px';
+
+                if(curr_dim.height < vp_height) {
+                    margin = (vp_height - curr_dim.height) / 2;
+                    img_node.style.marginTop = margin + 'px';
+                } else { 
+                    img_node.style.marginTop = 0;
+                }
+
+                img_node.src = images[index];
+
+            }, 5000);
+        }
+
+        </script>
+    </body>
+</html>
